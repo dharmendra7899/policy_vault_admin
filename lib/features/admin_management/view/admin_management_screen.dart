@@ -260,13 +260,11 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Colors.grey.shade300)),
         ),
-        child: Text(
+        child: SelectableText(
           text,
           style: context.textTheme.labelSmall?.copyWith(
             fontWeight: FontWeight.w600,
           ),
-          softWrap: true,
-          overflow: TextOverflow.visible,
         ),
       ),
     );

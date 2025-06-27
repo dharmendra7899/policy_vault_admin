@@ -470,13 +470,11 @@ class _AllUsersState extends State<AllUsers> {
   }
 
   Widget _wrapText(String text, BuildContext context) {
-    return Text(
+    return SelectableText(
       text,
       style: context.textTheme.labelSmall?.copyWith(
         fontWeight: FontWeight.w600,
       ),
-      softWrap: true,
-      overflow: TextOverflow.visible,
     );
   }
 }

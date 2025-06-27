@@ -30,9 +30,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int selectedFilterIndex = 0;
   final Set<int> _hoveredIndexes = {};
 
+
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     int crossAxisCount = screenWidth > 1200
         ? 4
@@ -75,18 +80,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 child: Column(
                   children: [
+
                     Align(
                       alignment: Alignment.centerRight,
                       child: Wrap(
-                        spacing: 4,
+                        spacing: 8,
                         children: List.generate(filters.length, (index) {
                           final selected = index == selectedFilterIndex;
-                          final hovered = _hoveredIndexes.contains(index);
+                          final isHovering = _hoveredIndexes.contains(index);
+
                           return MouseRegion(
-                            onEnter: (_) =>
-                                setState(() => _hoveredIndexes.add(index)),
-                            onExit: (_) =>
-                                setState(() => _hoveredIndexes.remove(index)),
+                            onEnter: (_) {
+                              setState(() {
+                                _hoveredIndexes.add(index);
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                _hoveredIndexes.remove(index);
+                              });
+                            },
+                            cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () =>
                                   setState(() => selectedFilterIndex = index),
@@ -96,12 +110,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 width: 100,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(6),
                                   color: selected
-                                      ? appColors.policyGradient1
-                                      : hovered
-                                      ? Colors.grey.shade200
-                                      : Colors.transparent,
+                                      ? appColors.primary
+                                      : appColors.appWhite,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: isHovering
+                                          ? appColors.buttonColor.withValues(alpha: 0.3)
+                                          : Colors.grey.withValues(alpha: 0.15),
+                                      blurRadius: isHovering ? 5 : 3,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
                                 child: Text(
                                   filters[index],
@@ -118,10 +139,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }),
                       ),
                     ),
+
                     const SizedBox(height: 6),
                     Divider(thickness: 1),
                     const SizedBox(height: 6),
-          
+
                     GridView.builder(
                       itemCount: dashboardItems.length,
                       shrinkWrap: true,
@@ -141,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
 
-          
+
               ExpiredPolicies(),
 
 

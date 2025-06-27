@@ -283,13 +283,11 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Colors.grey.shade300)),
         ),
-        child: Text(
+        child: SelectableText(
           text,
           style: context.textTheme.labelSmall?.copyWith(
             fontWeight: FontWeight.w600,
           ),
-          softWrap: true,
-          overflow: TextOverflow.visible,
         ),
       ),
     );
@@ -298,7 +296,8 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
   TableCell _statusCell(String status) {
     return TableCell(
       child: Container(
-        height: 38,width: 120,
+        height: 38,
+        width: 120,
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(width: 1, color: appColors.editTextColor),

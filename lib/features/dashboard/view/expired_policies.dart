@@ -233,9 +233,13 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Near By Exp. Policy', style: context.textTheme.titleMedium),
+                  Text(
+                    'Near By Exp. Policy',
+                    style: context.textTheme.titleMedium,
+                  ),
                   Row(
                     children: [
                       SizedBox(
@@ -245,7 +249,8 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
                           borderWidth: 1,
                           hintText: 'Search...',
                           prefixIcon: const Icon(Icons.search),
-                          onChanged: (value) => setState(() => searchQuery = value),
+                          onChanged: (value) =>
+                              setState(() => searchQuery = value),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -264,7 +269,6 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
               const Divider(thickness: 1),
               const SizedBox(height: 16),
 
-
               LayoutBuilder(
                 builder: (context, constraints) {
                   final screenWidth = constraints.maxWidth;
@@ -279,14 +283,15 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
                       scrollDirection: Axis.horizontal,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(minWidth: screenWidth),
-                        child: Container( decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey.shade300,
+                                width: 1,
+                              ),
                             ),
                           ),
-                        ),
                           child: DataTable(
                             headingRowColor: WidgetStateProperty.all(
                               Colors.grey.shade200,
@@ -352,9 +357,8 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
                                 (title) => DataColumn(
                                   label: Text(
                                     title,
-                                    style: context.textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
                                 ),
                               ),
@@ -378,21 +382,21 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
                                         });
                                       },
                                       fillColor:
-                                          WidgetStateProperty.resolveWith<Color?>(
-                                            (Set<WidgetState> states) {
-                                              if (states.contains(
-                                                WidgetState.disabled,
-                                              )) {
-                                                return appColors.borderColor;
-                                              }
-                                              if (states.contains(
-                                                WidgetState.selected,
-                                              )) {
-                                                return appColors.primary;
-                                              }
-                                              return appColors.appBackground;
-                                            },
-                                          ),
+                                          WidgetStateProperty.resolveWith<
+                                            Color?
+                                          >((Set<WidgetState> states) {
+                                            if (states.contains(
+                                              WidgetState.disabled,
+                                            )) {
+                                              return appColors.borderColor;
+                                            }
+                                            if (states.contains(
+                                              WidgetState.selected,
+                                            )) {
+                                              return appColors.primary;
+                                            }
+                                            return appColors.appBackground;
+                                          }),
 
                                       checkColor: appColors.appBackground,
 
@@ -410,7 +414,9 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
 
                                   DataCell(_wrapText(policy['id']!, context)),
                                   DataCell(_wrapText(policy['name']!, context)),
-                                  DataCell(_wrapText(policy['mobile']!, context)),
+                                  DataCell(
+                                    _wrapText(policy['mobile']!, context),
+                                  ),
                                   DataCell(_wrapText(policy['type']!, context)),
                                   DataCell(
                                     _wrapText(policy['policyNo']!, context),
@@ -474,13 +480,11 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
   }
 
   Widget _wrapText(String text, BuildContext context) {
-    return Text(
+    return SelectableText(
       text,
       style: context.textTheme.labelSmall?.copyWith(
         fontWeight: FontWeight.w600,
       ),
-      softWrap: true,
-      overflow: TextOverflow.visible,
     );
   }
 }

@@ -12,6 +12,7 @@ class Texts {
   String get login => 'LOGIN';
 
   String get changePassword => 'Change Password';
+
   String get welcomeAdmin => 'Welcome Admin!';
 
   String get logout => 'Logout';
@@ -173,6 +174,8 @@ class Texts {
   String get badgeDelete => 'Are you sure you want to delete the badge?';
 
   String get selectContestImage => 'Select Contest Image';
+
+  String get save => 'Save';
 }
 
 final texts = Texts();
