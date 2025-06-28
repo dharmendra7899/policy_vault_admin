@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AppColors {
   // final Color primary = const Color(0xFF191B1A);
   //new colors
+  final Color chooseColor = const Color(0xFFEFEFEF);
   final Color policyGradient1 = const Color(0xFF7BED86);
-  final Color policyGradient2 = const Color(0xFF4CF1C6);
+  final Color policyGradient2 = const Color(0xFFC3F6E8);
   final Color primary = const Color(0xFF0AB39C);
   final Color activeColor = const Color(0xFFEEF7F5);
   final Color primaryDark = const Color(0xFF0AB39C);

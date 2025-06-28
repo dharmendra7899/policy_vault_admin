@@ -68,6 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 margin: EdgeInsets.all(12),
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
                   color: appColors.appBackground,
                   boxShadow: [
                     BoxShadow(

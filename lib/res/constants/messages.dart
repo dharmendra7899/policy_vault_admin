@@ -14,6 +14,16 @@ class Messages {
 
   static String get OLD_PASSWORD => 'Please enter old password';
 
+  static String get SPECIAL_CHARACTER =>
+      'Password must be at least 8 characters long, with at least one uppercase letter, one number, and one special character.';
+
+
+  static String get EMAIL_VALID => 'Please enter valid email address.';
+
+  static String get PHONE_REQ => 'Please enter mobile number.';
+
+  static String get PHONE_VALID => 'Enter a valid 10-digit mobile number';
+
   static String get NEW_PASSWORD => 'Please enter new password';
 
   static String get CONFIRM_PASSWORD => 'Please enter confirm password';
@@ -34,33 +44,36 @@ class Messages {
 
   static String get CORRECT_PASSWORD => 'Password must contain at least 8 characters with one uppercase , one lowercase , one number and one special character';
 
-  static String get SELECT_SUBJECT => 'Select Subject';
+  static String get CONFIRM_PASSWORD_REQ => 'Please enter confirm password.';
+  static String get CON_PASSWORD_NOT_MATCHED =>
+      'Password and confirm password did not matched';
+  static String get REGISTRATION_NO_REQ =>
+      'Please enter vehicle registration number.';
 
-  static String get ENTER_QUESTION => 'Please enter a question';
+  static String get REGISTRATION_NO_VALID =>
+      'Enter a valid vehicle registration number.';
 
-  static String get ENTER_OPTION => 'Please enter a option';
+  static String get VOTER_REQ => 'Voter ID is required.';
 
-  static String get ENTER_MARKS => 'Please enter question marks';
+  static String get VOTER_VALID => 'Enter a valid Voter ID number.';
 
-  static String get ENTER_SET_NAME => 'Please enter set name';
+  static String get AADHAAR_REQ => 'Aadhaar number is required.';
 
-  static String get ENTER_CONTEST_NAME => 'Please enter contest name';
+  static String get AADHAAR_VALID => 'Enter a valid Aadhaar number.';
 
-  static String get SELECT_START_QUIZ_DATE => 'Select start quiz date';
+  static String get PAN_REQ => 'PAN Card number is required.';
 
-  static String get SELECT_END_QUIZ_DATE => 'Select end quiz date';
+  static String get DOCUMENT_REQ => 'Please upload your document';
 
-  static String get ENTER_REWARD_POINTS => 'Please enter rewards points';
+  static String get PAN_VALID => 'Enter a valid PAN Card number.';
 
-  static String get ENTER_REWARD_PRICE => 'Please enter rewards price';
+  static String get DRIVING_LICENSE_REQ => 'Driving Licence is required.';
 
-  static String get ENTER_BADGE_NAME => 'Please enter badge name';
+  static String get DRIVING_LICENSE_VALID =>
+      'Enter a valid Driving Licence number.';
+  static String get PASSPORT_REQ => 'Passport number is required.';
 
-  static String get ENTER_BADGE_POINTS => 'Please enter badge points';
-
-  static String get ENTER_QUIZ_SET_NAME => 'Please enter quiz set name';
-
-  static  String get SELECT_QUIZ_LEVEL => 'Select Level';
+  static String get PASSPORT_VALID => 'Enter a valid Passport number.';
 
 
 }

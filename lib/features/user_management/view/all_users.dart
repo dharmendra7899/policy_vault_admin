@@ -1,11 +1,11 @@
 import 'dart:html' as html;
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:policy_vault_admin/data_table/custom_pager.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
 import 'package:policy_vault_admin/res/widgets/app_text_field.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
-import 'package:policy_vault_admin/responsive/layout.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
 
 class AllUsers extends StatefulWidget {
@@ -25,7 +25,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '2',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '2',
@@ -35,7 +35,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '4',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '3',
@@ -45,7 +45,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '2',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
 
     {
@@ -56,7 +56,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '2',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '3',
@@ -66,7 +66,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '1',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '3',
@@ -76,7 +76,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '0',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '7',
@@ -86,7 +86,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '0',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '8',
@@ -96,7 +96,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '22',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
     {
       'id': '9',
@@ -106,7 +106,7 @@ class _AllUsersState extends State<AllUsers> {
       'shared': '22',
       'date': '30/06/2025',
       'status': 'ACTIVE',
-      'action': 'Edit',
+      'action': 'View',
     },
   ];
 
@@ -165,9 +165,6 @@ class _AllUsersState extends State<AllUsers> {
     final csv = const ListToCsvConverter().convert(rows);
     final blob = html.Blob([csv]);
     final url = html.Url.createObjectUrlFromBlob(blob);
-    final anchor = html.AnchorElement(href: url)
-      ..setAttribute("download", "policies.csv")
-      ..click();
     html.Url.revokeObjectUrl(url);
   }
 
@@ -181,7 +178,6 @@ class _AllUsersState extends State<AllUsers> {
 
   @override
   Widget build(BuildContext context) {
-    var layout = Layout(context);
     return Scaffold(
       backgroundColor: appColors.screenBg,
       body: SingleChildScrollView(
@@ -189,6 +185,7 @@ class _AllUsersState extends State<AllUsers> {
           margin: EdgeInsets.all(20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: appColors.appBackground,
             boxShadow: [
               BoxShadow(
@@ -415,23 +412,25 @@ class _AllUsersState extends State<AllUsers> {
                                     ),
                                   ),
                                   DataCell(
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: appColors.primary,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text(
-                                        policy['action']!,
-                                        style: context.textTheme.labelSmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: appColors.appWhite,
-                                              fontSize: 10,
-                                            ),
+                                    GestureDetector(onTap: () => context.goNamed("User Details"),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: appColors.primary,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          policy['action']!,
+                                          style: context.textTheme.labelSmall
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: appColors.appWhite,
+                                                fontSize: 10,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   ),

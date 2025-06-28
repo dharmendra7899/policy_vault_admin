@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
 
 class AppTextField extends StatelessWidget {
-
   final Widget? iconData;
   final Widget? leadingIcon;
   final String? labelText;
@@ -37,9 +37,13 @@ class AppTextField extends StatelessWidget {
   final Color? bgColor;
   final Color? textColor;
   final bool? isSearch;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppTextField({
     super.key,
+    this.inputFormatters,
+
     this.labelText,
     this.isSearch,
     this.iconData,
@@ -69,6 +73,7 @@ class AppTextField extends StatelessWidget {
     this.prefixText,
     this.counterText,
     this.obscuringCharacter = '•',
+    this.textCapitalization = TextCapitalization.none,
     this.contentPadding = const EdgeInsets.symmetric(
       vertical: 12,
       horizontal: 15,
@@ -81,7 +86,9 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
       onFieldSubmitted: onFieldSubmitted,
+      textCapitalization: textCapitalization,
       enabled: enabled,
       focusNode: focusNode,
       initialValue: initialValue,
@@ -101,6 +108,7 @@ class AppTextField extends StatelessWidget {
         fontSize: fontSize,
         color: textColor,
       ),
+
       obscuringCharacter: obscuringCharacter,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
@@ -109,6 +117,10 @@ class AppTextField extends StatelessWidget {
         prefixText: prefixText,
         filled: readOnly,
         hintText: hintText,
+        labelStyle: context.textTheme.bodyMedium?.copyWith(
+          fontSize: 15,
+          color: textColor,
+        ),
         hintStyle: context.textTheme.labelMedium?.copyWith(
           color: appColors.editTextColor,
         ),

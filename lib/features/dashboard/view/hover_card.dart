@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:policy_vault_admin/theme/colors.dart';
 
 class HoverCard extends StatefulWidget {
   final Map<String, dynamic> item;
@@ -24,7 +25,7 @@ class _HoverCardState extends State<HoverCard> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appColors.appWhite,
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
             BoxShadow(

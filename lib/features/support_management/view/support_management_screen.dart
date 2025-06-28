@@ -85,6 +85,7 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
           margin: EdgeInsets.all(20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: appColors.appBackground,
             boxShadow: [
               BoxShadow(

@@ -198,9 +198,9 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
     final csv = const ListToCsvConverter().convert(rows);
     final blob = html.Blob([csv]);
     final url = html.Url.createObjectUrlFromBlob(blob);
-    final anchor = html.AnchorElement(href: url)
-      ..setAttribute("download", "policies.csv")
-      ..click();
+    // final anchor = html.AnchorElement(href: url)
+    //   ..setAttribute("download", "policies.csv")
+    //   ..click();
     html.Url.revokeObjectUrl(url);
   }
 
@@ -220,6 +220,7 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
           margin: EdgeInsets.all(12),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: appColors.appBackground,
             boxShadow: [
               BoxShadow(

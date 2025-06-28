@@ -195,10 +195,7 @@ class _AdminWrapperState extends State<AdminWrapper> {
               Expanded(
                 child: ListView.separated(
                   itemCount: menuItems.length,
-                  separatorBuilder: (_, __) => Divider(
-                    color: appColors.editTextColor,
-                    height: 0.1,
-                  ),
+                  separatorBuilder: (_, __) => SizedBox(),
                   itemBuilder: (context, index) {
                     final item = menuItems[index];
                     final isChild = item['isChild'] == true;

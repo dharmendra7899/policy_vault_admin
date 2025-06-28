@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:policy_vault_admin/res/constants/texts.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
@@ -5,14 +6,30 @@ import 'package:policy_vault_admin/res/widgets/app_text_field.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
 
-class AboutUsScreen extends StatefulWidget {
-  const AboutUsScreen({super.key});
+class AddCompany extends StatefulWidget {
+  const AddCompany({super.key});
 
   @override
-  State<AboutUsScreen> createState() => _AboutUsScreenState();
+  State<AddCompany> createState() => _AddCompanyState();
 }
 
-class _AboutUsScreenState extends State<AboutUsScreen> {
+class _AddCompanyState extends State<AddCompany> {
+  final TextEditingController _companyController = TextEditingController();
+  String? _selectedFileName;
+
+  Future<void> _pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'pdf'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        _selectedFileName = result.files.first.name;
+      });
+    }
+  }
+
   var statusList = ['Active', 'InActive'];
   String? selectedStatus;
 
@@ -41,14 +58,41 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('About Us Details', style: context.textTheme.bodyMedium),
+                  Text(
+                    texts.insuranceCompany,
+                    style: context.textTheme.bodyMedium,
+                  ),
                   const SizedBox(height: 6),
 
                   AppTextField(
+                    controller: _companyController,
                     radius: 5,
                     borderWidth: 1.5,
-                    maxLines: 10,
-                    hintText: 'Write here...',
+                    hintText: 'Enter Information',
+                  ),
+
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      AppButton(
+                        height: 33,
+                        width: 100,
+                        radius: 4,
+                        fontSize: 12,
+                        borderWidth: 1,
+                        onPressed: _pickFile,
+                        title: texts.chooseFile,
+                        color: appColors.chooseColor,
+                        isBorder: true,
+                        borderColor: appColors.appBlack,
+                        textColor: appColors.appBlack,
+                      ),
+
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(_selectedFileName ?? "No file chosen"),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -77,7 +121,13 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         padding: EdgeInsets.all(8),
                         isDense: true,
                         underline: SizedBox(),
-                        hint: Text("Status"),
+                        hint: Text(
+                          "Status",
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontSize: 15,
+                            color: appColors.titleColor,
+                          ),
+                        ),
                         borderRadius: BorderRadius.circular(8),
                         value: selectedStatus,
 
@@ -88,7 +138,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
 
                             child: Text(
                               items,
-                              style: context.textTheme.bodySmall,
+                              style: context.textTheme.bodyMedium?.copyWith(
+                                fontSize: 15,
+                                color: appColors.titleColor,
+                              ),
                             ),
                           );
                         }).toList(),

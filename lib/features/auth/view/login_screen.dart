@@ -82,15 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: h * 0.025),
                               AppTextField(
                                 controller: email,
-                                hintText: texts.enterEmail,
-                                labelText: texts.email,
+                                hintText: texts.emailAddressHint,
+                                labelText: texts.emailAddress,
 
                               ),
                               const SizedBox(height: 20),
                               AppTextField(
                                 obscureText: !isPasswordVisible,
                                 controller: password,
-                                hintText: texts.enterPassword,
+                                hintText: texts.passwordHint,
                                 labelText: texts.password,
 
                                 iconData: IconButton(
@@ -172,15 +172,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: h * 0.07),
                         AppTextField(
                           controller: email,
-                          hintText: texts.enterEmail,
-                          labelText: texts.email,
+                          hintText: texts.emailAddressHint,
+                          labelText: texts.emailAddress,
 
                         ),
                         const SizedBox(height: 20),
                         AppTextField(
                           obscureText: !isPasswordVisible,
                           controller: password,
-                          hintText: texts.enterPassword,
+                          hintText: texts.passwordHint,
                           labelText: texts.password,
 
                           iconData: IconButton(

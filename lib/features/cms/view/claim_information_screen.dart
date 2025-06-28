@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:policy_vault_admin/data_table/custom_pager.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
@@ -67,6 +68,7 @@ class _ClaimInformationScreenState extends State<ClaimInformationScreen> {
           margin: EdgeInsets.all(20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: appColors.appBackground,
             boxShadow: [
               BoxShadow(
@@ -85,7 +87,7 @@ class _ClaimInformationScreenState extends State<ClaimInformationScreen> {
                 children: [
                   Text('Claim Listing', style: context.textTheme.titleMedium),
                   AppButton(
-                    onPressed: () {},
+                    onPressed: () => context.goNamed("Add Claim"),
                     title: "Add Claim Details ",
                     fontSize: 12,
                     icon: Icon(Icons.add, color: appColors.appWhite),

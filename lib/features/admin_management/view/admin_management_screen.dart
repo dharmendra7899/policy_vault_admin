@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:policy_vault_admin/data_table/custom_pager.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
 import 'package:policy_vault_admin/res/widgets/app_text_field.dart';
@@ -98,6 +99,7 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
           margin: EdgeInsets.all(20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: appColors.appBackground,
             boxShadow: [
               BoxShadow(
@@ -133,7 +135,9 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
                       ),
                       SizedBox(width: 12),
                       AppButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.goNamed("Add Admin User");
+                        },
                         title: "Add New Admin User",
                         fontSize: 12,
                         icon: Icon(Icons.add, color: appColors.appWhite),
