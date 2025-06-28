@@ -198,9 +198,9 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
     final csv = const ListToCsvConverter().convert(rows);
     final blob = html.Blob([csv]);
     final url = html.Url.createObjectUrlFromBlob(blob);
-    // final anchor = html.AnchorElement(href: url)
-    //   ..setAttribute("download", "policies.csv")
-    //   ..click();
+    html.AnchorElement(href: url)
+      ..setAttribute("download", "policies.csv")
+      ..click();
     html.Url.revokeObjectUrl(url);
   }
 

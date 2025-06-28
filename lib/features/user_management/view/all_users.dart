@@ -165,6 +165,9 @@ class _AllUsersState extends State<AllUsers> {
     final csv = const ListToCsvConverter().convert(rows);
     final blob = html.Blob([csv]);
     final url = html.Url.createObjectUrlFromBlob(blob);
+    html.AnchorElement(href: url)
+      ..setAttribute("download", "policies.csv")
+      ..click();
     html.Url.revokeObjectUrl(url);
   }
 
