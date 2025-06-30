@@ -82,7 +82,7 @@ class SideMenuProvider extends ChangeNotifier {
         notifyListeners();
         return;
       } else {
-        if (item['children'].isNotEmpty) {
+        if (item['children']?.isNotEmpty==true) {
           for (var child in item['children']) {
             if (child['children'] != null && child['route'] != route) {
               try {

@@ -20,7 +20,7 @@ class TableCreator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var layout = Layout(context);
+    var layout = LayoutHelper(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(

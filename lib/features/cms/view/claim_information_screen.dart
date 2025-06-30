@@ -109,58 +109,49 @@ class _ClaimInformationScreenState extends State<ClaimInformationScreen> {
                     controller: _scrollController,
                     interactive: true,
                     radius: Radius.circular(6),
+
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: screenWidth),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey.shade300,
-                                width: 1,
-                              ),
-                            ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Table(
+                          border: TableBorder.symmetric(
+                            inside: BorderSide(color: Colors.grey.shade400),
+                            outside: BorderSide(color: Colors.grey.shade400),
                           ),
-                          child: Table(
-                            border: TableBorder.symmetric(
-                              inside: BorderSide(color: Colors.grey.shade400),
-                              outside: BorderSide(color: Colors.grey.shade400),
-                            ),
-                            columnWidths: const {
-                              0: FixedColumnWidth(80),
-                              1: FixedColumnWidth(200),
-                              2: FixedColumnWidth(300),
+                          columnWidths: {
+                            0: FixedColumnWidth(100),
+                            1: FixedColumnWidth(300),
+                            2: FixedColumnWidth(300),
+                            3: FixedColumnWidth(600),
+                            4: FixedColumnWidth(200),
+                          },
 
-                              4: FixedColumnWidth(120),
-                              // Customize per column
-                            },
-                            children: [
+                          children: [
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                              ),
+                              children: [
+                                _headerCell('S.No'),
+                                _headerCell('Insurance Company'),
+                                _headerCell('Policy Type'),
+                                _headerCell('Claim Information'),
+                                _headerCell('Action'),
+                              ],
+                            ),
+                            for (final policy in paginatedPolicies)
                               TableRow(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                ),
                                 children: [
-                                  _headerCell('S.No'),
-                                  _headerCell('Insurance Company'),
-                                  _headerCell('Policy Type'),
-                                  _headerCell('Claim Information'),
-                                  _headerCell('Action'),
+                                  _cell(policy['s_no']!),
+                                  _cell(policy['question']!),
+                                  _cell(policy['answer']!),
+                                  _cell(policy['claim']!),
+                                  _actionCell(policy['action']!),
                                 ],
                               ),
-                              for (final policy in paginatedPolicies)
-                                TableRow(
-                                  children: [
-                                    _cell(policy['s_no']!),
-                                    _cell(policy['question']!),
-                                    _cell(policy['answer']!),
-                                    _cell(policy['claim']!),
-                                    _actionCell(policy['action']!),
-                                  ],
-                                ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),

@@ -142,7 +142,12 @@ class _AdminWrapperState extends State<AdminWrapper> {
                 ),
               ],
             ),
-            actions: const [Padding(padding: EdgeInsets.only(right: 20), child: AdminAvatarMenu())],
+            actions: const [
+              Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: AdminAvatarMenu(),
+              ),
+            ],
           ),
           drawer: _sideMenu(),
           body: widget.child,
@@ -152,15 +157,23 @@ class _AdminWrapperState extends State<AdminWrapper> {
   }
 
   Widget _sideMenu() {
-    final layout = Layout(context);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final containerWidth = layout.isMobile
-        ? screenWidth * 0.90
-        : layout.isFoldableOrSmallTablet
-        ? screenWidth * 0.30
-        : layout.isTablet
-        ? screenWidth * 0.28
-        : screenWidth * 0.16;
+    final layout = LayoutHelper(context);
+    double widthFactor;
+    if (layout.isMobileS) {
+      widthFactor = 0.95;
+    } else if (layout.isMobileM) {
+      widthFactor = 0.90;
+    } else if (layout.isMobileL) {
+      widthFactor = 0.85;
+    } else if (layout.isTablet) {
+      widthFactor = 0.30;
+    } else if (layout.isLaptop) {
+      widthFactor = 0.24;
+    } else if (layout.isDesktop) {
+      widthFactor = 0.18;
+    } else {
+      widthFactor = 0.14;
+    }
 
     return Consumer<SideMenuProvider>(
       builder: (context, provider, _) {
@@ -171,13 +184,16 @@ class _AdminWrapperState extends State<AdminWrapper> {
           if (item['title'] == expandedMenuTitle && item['children'] is List) {
             final children = item['children'] as List;
             for (var child in children) {
-              menuItems.add({...child as Map<String, dynamic>, 'isChild': true});
+              menuItems.add({
+                ...child as Map<String, dynamic>,
+                'isChild': true,
+              });
             }
           }
         }
 
         return Container(
-          width: containerWidth,
+          width: layout.screenWidth * widthFactor,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -219,18 +235,27 @@ class _AdminWrapperState extends State<AdminWrapper> {
                           ),
                           visualDensity: const VisualDensity(horizontal: -4),
                           onTap: () {
-                            final isMobile = MediaQuery.of(context).size.width < 600;
+                            final isMobile =
+                                MediaQuery.of(context).size.width < 600;
 
                             if (isParent) {
                               setState(() {
                                 expandedMenuTitle =
-                                expandedMenuTitle == item['title'] ? null : item['title'];
+                                    expandedMenuTitle == item['title']
+                                    ? null
+                                    : item['title'];
                               });
-                              provider.setActiveIndex(item['index'], item['title']);
+                              provider.setActiveIndex(
+                                item['index'],
+                                item['title'],
+                              );
                               return;
                             }
 
-                            provider.setActiveIndex(item['index'], item['title']);
+                            provider.setActiveIndex(
+                              item['index'],
+                              item['title'],
+                            );
                             if (isMobile) Navigator.of(context).pop();
 
                             context.go(item['route']);
@@ -248,11 +273,11 @@ class _AdminWrapperState extends State<AdminWrapper> {
                           ),
                           trailing: isParent
                               ? Icon(
-                            expandedMenuTitle == item['title']
-                                ? Icons.keyboard_arrow_up
-                                : Icons.keyboard_arrow_down,
-                            color: appColors.titleColor1,
-                          )
+                                  expandedMenuTitle == item['title']
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  color: appColors.titleColor1,
+                                )
                               : null,
                           title: Text(
                             item['title'] ?? '',
@@ -278,4 +303,3 @@ class _AdminWrapperState extends State<AdminWrapper> {
     );
   }
 }
-

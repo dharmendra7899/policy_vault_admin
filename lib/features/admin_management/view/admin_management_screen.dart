@@ -113,110 +113,95 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total Admin User - 12',
-                    style: context.textTheme.titleMedium,
-                  ),
-                  Row(
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isNarrow = constraints.maxWidth < 600;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: 250,
-                        child: AppTextField(
-                          radius: 5,
-                          borderWidth: 1,
-                          hintText: 'Search here...',
-                          prefixIcon: const Icon(Icons.search),
-                          onChanged: (value) =>
-                              setState(() => searchQuery = value),
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      AppButton(
-                        onPressed: () {
-                          context.goNamed("Add Admin User");
-                        },
-                        title: "Add New Admin User",
-                        fontSize: 12,
-                        icon: Icon(Icons.add, color: appColors.appWhite),
-                        radius: 5,
-                        width: 220,
-                      ),
+                      isNarrow
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Admin User - 12',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 12),
+                                _searchAndDownloadUI(isVertical: true),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total Admin User - 12',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                _searchAndDownloadUI(isVertical: false),
+                              ],
+                            ),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
+
               const SizedBox(height: 16),
               const Divider(thickness: 1),
               const SizedBox(height: 16),
 
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final screenWidth = constraints.maxWidth;
-
-                  return Scrollbar(
-                    thumbVisibility: true,
-                    controller: _scrollController,
-                    interactive: true,
-                    radius: Radius.circular(6),
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: screenWidth),
-                        child: Container(
+              Scrollbar(
+                thumbVisibility: true,
+                controller: _scrollController,
+                interactive: true,
+                radius: Radius.circular(6),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Table(
+                      border: TableBorder.symmetric(
+                        inside: BorderSide(color: Colors.grey.shade400),
+                        outside: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      columnWidths: {
+                        0: FixedColumnWidth(100),
+                        1: FixedColumnWidth(300),
+                        2: FixedColumnWidth(300),
+                        3: FixedColumnWidth(500),
+                        4: FixedColumnWidth(140),
+                        5: FixedColumnWidth(140),
+                      },
+                      children: [
+                        TableRow(
                           decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey.shade300,
-                                width: 1,
-                              ),
-                            ),
+                            color: Colors.grey.shade200,
                           ),
-                          child: Table(
-                            border: TableBorder.symmetric(
-                              inside: BorderSide(color: Colors.grey.shade400),
-                              outside: BorderSide(color: Colors.grey.shade400),
-                            ),
-                            columnWidths: const {
-                              4: FixedColumnWidth(120),
-                              5: FixedColumnWidth(120),
-                              // Customize per column
-                            },
+                          children: [
+                            _headerCell('User ID'),
+                            _headerCell('Name'),
+                            _headerCell('Mobile Number'),
+                            _headerCell('Email'),
+                            _headerCell('Status'),
+                            _headerCell('Action'),
+                          ],
+                        ),
+                        for (final policy in paginatedPolicies)
+                          TableRow(
                             children: [
-                              TableRow(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                ),
-                                children: [
-                                  _headerCell('User ID'),
-                                  _headerCell('Name'),
-                                  _headerCell('Mobile Number'),
-                                  _headerCell('Email'),
-                                  _headerCell('Status'),
-                                  _headerCell('Action'),
-                                ],
-                              ),
-                              for (final policy in paginatedPolicies)
-                                TableRow(
-                                  children: [
-                                    _cell(policy['user_id']!),
-                                    _cell(policy['name']!),
-                                    _cell(policy['mobile']!),
-                                    _cell(policy['email']!),
-                                    _statusCell(policy['status']!),
-                                    _actionCell(policy['action']!),
-                                  ],
-                                ),
+                              _cell(policy['user_id']!),
+                              _cell(policy['name']!),
+                              _cell(policy['mobile']!),
+                              _cell(policy['email']!),
+                              _statusCell(policy['status']!),
+                              _actionCell(policy['action']!),
                             ],
                           ),
-                        ),
-                      ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
               const SizedBox(height: 26),
 
@@ -239,6 +224,51 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _searchAndDownloadUI({bool isVertical = false}) {
+    return isVertical
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _searchField(),
+              const SizedBox(height: 12),
+              _downloadButton(),
+            ],
+          )
+        : Row(
+            children: [
+              _searchField(),
+              const SizedBox(width: 12),
+              _downloadButton(),
+            ],
+          );
+  }
+
+  Widget _searchField() {
+    return SizedBox(
+      width: 250,
+      child: AppTextField(
+        radius: 5,
+        borderWidth: 1,
+        hintText: 'Search...',
+        prefixIcon: const Icon(Icons.search),
+        onChanged: (value) => setState(() => searchQuery = value),
+      ),
+    );
+  }
+
+  Widget _downloadButton() {
+    return AppButton(
+      onPressed: () {
+        context.goNamed("Add Admin User");
+      },
+      title: "Add New Admin User",
+      fontSize: 12,
+      icon: Icon(Icons.add, color: appColors.appWhite),
+      radius: 5,
+      width: 220,
     );
   }
 

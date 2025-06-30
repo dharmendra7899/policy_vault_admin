@@ -140,7 +140,7 @@ class _InsuranceCompanyScreenState extends State<InsuranceCompanyScreen> {
                             columnWidths: const {
                               0: FixedColumnWidth(80),
 
-                              2: FixedColumnWidth(300),
+                              2: FixedColumnWidth(200),
                               3: FixedColumnWidth(120),
                               // Customize per column
                             },

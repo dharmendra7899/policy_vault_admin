@@ -37,7 +37,7 @@ class _ViewUserDetailsState extends State<ViewUserDetails>
 
   @override
   Widget build(BuildContext context) {
-    var layout = Layout(context);
+    var layout = LayoutHelper(context);
     return Scaffold(
       backgroundColor: appColors.screenBg,
       body: Column(

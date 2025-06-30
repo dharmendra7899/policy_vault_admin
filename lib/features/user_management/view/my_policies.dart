@@ -128,6 +128,7 @@ class _MyPoliciesState extends State<MyPolicies> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Table(
+
                   border: TableBorder.symmetric(
                     inside: BorderSide(color: Colors.grey.shade400),
                     outside: BorderSide(color: Colors.grey.shade400),
@@ -264,7 +265,7 @@ class _MyPoliciesState extends State<MyPolicies> {
       child: Container(
         width: 100,
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(
           color: appColors.primary,

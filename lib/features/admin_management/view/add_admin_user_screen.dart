@@ -44,7 +44,7 @@ class _AddAdminUserScreenState extends State<AddAdminUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var layout = Layout(context);
+    var layout = LayoutHelper(context);
     return Scaffold(
       backgroundColor: appColors.screenBg,
       body: SingleChildScrollView(

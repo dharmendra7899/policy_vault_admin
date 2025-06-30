@@ -108,6 +108,51 @@ class _FaqsScreenState extends State<FaqsScreen> {
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       scrollDirection: Axis.horizontal,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Table(
+
+                          border: TableBorder.symmetric(
+                            inside: BorderSide(color: Colors.grey.shade400),
+                            outside: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          columnWidths: {
+
+                            0: FixedColumnWidth(110),
+                            1: FixedColumnWidth(400),
+                            2: FixedColumnWidth(800),
+
+                            3: FixedColumnWidth(160),
+
+                          },
+                          children: [
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                              ),
+                              children: [
+                                _headerCell('S.No'),
+                                _headerCell('Question'),
+                                _headerCell('Answer'),
+                                _headerCell('Action'),
+                              ],
+                            ),
+                            for (final policy in paginatedPolicies)
+                              TableRow(
+                                children: [
+                                  _cell(policy['s_no']!),
+                                  _cell(policy['question']!),
+                                  _cell(policy['answer']!),
+                                  _actionCell(policy['action']!),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  /*  child: SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(minWidth: screenWidth),
                         child: Container(
@@ -156,7 +201,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
                           ),
                         ),
                       ),
-                    ),
+                    ),*/
                   );
                 },
               ),

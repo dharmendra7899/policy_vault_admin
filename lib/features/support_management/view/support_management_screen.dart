@@ -99,144 +99,106 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total Number of Query - 1',
-                    style: context.textTheme.titleMedium,
-                  ),
-
-                  Row(
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isNarrow = constraints.maxWidth < 600;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: 250,
-                        child: AppTextField(
-                          radius: 5,
-                          borderWidth: 1,
-                          hintText: 'Search here...',
-                          prefixIcon: const Icon(Icons.search),
-                          onChanged: (value) =>
-                              setState(() => searchQuery = value),
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Container(
-                        width: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: appColors.borderColor,
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: DropdownButton(
-                          isExpanded: true,
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.all(8),
-
-                          isDense: true,
-                          underline: SizedBox(),
-                          hint: Text("Filter BY"),
-                          borderRadius: BorderRadius.circular(8),
-                          value: dropdownValue,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(
-                                items,
-                                style: context.textTheme.bodySmall,
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                        ),
-                      ),
+                      isNarrow
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Number of Query - 1',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 12),
+                                _searchAndDownloadUI(isVertical: true),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total Number of Query - 1',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                _searchAndDownloadUI(isVertical: false),
+                              ],
+                            ),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
+
               const SizedBox(height: 16),
               const Divider(thickness: 1),
               const SizedBox(height: 16),
 
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final screenWidth = constraints.maxWidth;
+              Scrollbar(
+                thumbVisibility: true,
+                controller: _scrollController,
+                interactive: true,
+                radius: Radius.circular(6),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Table(
 
-                  return Scrollbar(
-                    thumbVisibility: true,
-                    controller: _scrollController,
-                    interactive: true,
-                    radius: Radius.circular(6),
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: screenWidth),
-                        child: Container(
+                      border: TableBorder.symmetric(
+                        inside: BorderSide(color: Colors.grey.shade400),
+                        outside: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      columnWidths: {
+                        0: FixedColumnWidth(140),
+                        1: FixedColumnWidth(140),
+                        2: FixedColumnWidth(200),
+                        3: FixedColumnWidth(200),
+                        4: FixedColumnWidth(300),
+                        5: FixedColumnWidth(400),
+                        6: FixedColumnWidth(150),
+                        7: FixedColumnWidth(150),
+                        8: FixedColumnWidth(120),
+                      },
+                      children: [
+                        TableRow(
                           decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey.shade300,
-                                width: 1,
-                              ),
-                            ),
+                            color: Colors.grey.shade200,
                           ),
-                          child: Table(
-                            border: TableBorder.symmetric(
-                              inside: BorderSide(color: Colors.grey.shade400),
-                              outside: BorderSide(color: Colors.grey.shade400),
-                            ),
-                            columnWidths: const {
-                              5: FixedColumnWidth(300),
-                              6: FlexColumnWidth(),
-                              8: FixedColumnWidth(120),
-                              // Customize per column
-                            },
+                          children: [
+                            _headerCell('Query Number'),
+                            _headerCell('Customer ID'),
+                            _headerCell('Name'),
+                            _headerCell('Mobile Number'),
+                            _headerCell('Email'),
+                            _headerCell('Message'),
+                            _headerCell('Date'),
+                            _headerCell('Status'),
+                            _headerCell('Action'),
+                          ],
+                        ),
+                        for (final policy in paginatedPolicies)
+                          TableRow(
                             children: [
-                              TableRow(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                ),
-                                children: [
-                                  _headerCell('Query Number'),
-                                  _headerCell('Customer ID'),
-                                  _headerCell('Name'),
-                                  _headerCell('Mobile Number'),
-                                  _headerCell('Email'),
-                                  _headerCell('Message'),
-                                  _headerCell('Date'),
-                                  _headerCell('Status'),
-                                  _headerCell('Action'),
-                                ],
-                              ),
-                              for (final policy in paginatedPolicies)
-                                TableRow(
-                                  children: [
-                                    _cell(policy['query_no']!),
-                                    _cell(policy['customer_id']!),
-                                    _cell(policy['name']!),
-                                    _cell(policy['mobile']!),
-                                    _cell(policy['email']!),
-                                    _cell(policy['message']!),
-                                    _cell(policy['date']!),
-                                    _statusCell(policy['status']!),
-                                    _actionCell(policy['action']!),
-                                  ],
-                                ),
+                              _cell(policy['query_no']!),
+                              _cell(policy['customer_id']!),
+                              _cell(policy['name']!),
+                              _cell(policy['mobile']!),
+                              _cell(policy['email']!),
+                              _cell(policy['message']!),
+                              _cell(policy['date']!),
+                              _statusCell(policy['status']!),
+                              _actionCell(policy['action']!),
                             ],
                           ),
-                        ),
-                      ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
+
               ),
               const SizedBox(height: 26),
 
@@ -258,6 +220,71 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _searchAndDownloadUI({bool isVertical = false}) {
+    return isVertical
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _searchField(),
+              const SizedBox(height: 12),
+              _downloadButton(),
+            ],
+          )
+        : Row(
+            children: [
+              _searchField(),
+              const SizedBox(width: 12),
+              _downloadButton(),
+            ],
+          );
+  }
+
+  Widget _searchField() {
+    return SizedBox(
+      width: 250,
+      child: AppTextField(
+        radius: 5,
+        borderWidth: 1,
+        hintText: 'Search...',
+        prefixIcon: const Icon(Icons.search),
+        onChanged: (value) => setState(() => searchQuery = value),
+      ),
+    );
+  }
+
+  Widget _downloadButton() {
+    return Container(
+      width: 150,
+      decoration: BoxDecoration(
+        border: Border.all(width: 1, color: appColors.borderColor),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: DropdownButton(
+        isExpanded: true,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(8),
+
+        isDense: true,
+        underline: SizedBox(),
+        hint: Text("Filter BY"),
+        borderRadius: BorderRadius.circular(8),
+        value: dropdownValue,
+        icon: const Icon(Icons.keyboard_arrow_down),
+        items: items.map((String items) {
+          return DropdownMenuItem(
+            value: items,
+            child: Text(items, style: context.textTheme.bodySmall),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            dropdownValue = newValue!;
+          });
+        },
       ),
     );
   }
@@ -297,9 +324,9 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
   TableCell _statusCell(String status) {
     return TableCell(
       child: Container(
-        height: 38,
-        width: 120,
-        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        height: 40,
+        width: 140,
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           border: Border.all(width: 1, color: appColors.editTextColor),
           borderRadius: BorderRadius.circular(4),
@@ -342,7 +369,7 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
         child: Container(
           width: 100,
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           decoration: BoxDecoration(
             color: appColors.primary,

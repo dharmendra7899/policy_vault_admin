@@ -23,51 +23,63 @@ class _HoverCardState extends State<HoverCard> {
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: appColors.appWhite,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(6),
           boxShadow: [
             BoxShadow(
               color: isHovering
-                  ? Colors.indigo.withValues(alpha: 0.3)
-                  : Colors.grey.withValues(alpha: 0.1),
+                  ? Colors.indigo.withOpacity(0.2)
+                  : Colors.grey.withOpacity(0.08),
               blurRadius: isHovering ? 8 : 3,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFFF1F3F6),
-              ),
-              child: Icon(item['icon'], color: Colors.indigo),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 0, maxWidth: constraints.maxWidth),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    item['label'],
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFF1F3F6),
+                    ),
+                    child: Icon(item['icon'], color: Colors.indigo, size: 20),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item['value'].toString(),
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['label'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item['value'].toString(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

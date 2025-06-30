@@ -76,22 +76,23 @@ class _AdminAvatarMenuState extends State<AdminAvatarMenu> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          title: Text(texts.logout, style: context.textTheme.bodyLarge),
+          title: Text(texts.logout, style: context.textTheme.titleLarge),
           content: Text(
             texts.logoutHeading,
             style: context.textTheme.bodyLarge,
           ),
           actions: <Widget>[
             AppButton(
-              radius: 16,
+              radius: 8,
               width: MediaQuery.of(context).size.width * 0.06,
               onPressed: () {
+                Navigator.of(context).pop();
                 // _logout();
               },
               title: texts.yes,
             ),
             AppButton(
-              radius: 16,
+              radius: 8,
               width: MediaQuery.of(context).size.width * 0.06,
               onPressed: () {
                 Navigator.of(context).pop();

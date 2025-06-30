@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
-class Layout {
+class LayoutHelper {
   final BuildContext context;
+  final double width;
 
-  Layout(this.context);
+  LayoutHelper(this.context) : width = MediaQuery.of(context).size.width;
 
-  double get _width => MediaQuery.of(context).size.width;
+  bool get isMobileS => width < 360;
+  bool get isMobileM => width >= 360 && width < 400;
+  bool get isMobileL => width >= 400 && width < 600;
 
-  /// Standard breakpoints
-  bool get isMobile => _width < 600;
+  bool get isMobile => width < 600;
+  bool get isTablet => width >= 600 && width < 1024;
+  bool get isLaptop => width >= 1024 && width < 1440;
+  bool get isDesktop => width >= 1440 && width < 2560;
+  bool get isUltraHD => width >= 2560;
 
-  /// Covers foldables like Z Fold unfolded, small landscape tablets
-  bool get isFoldableOrSmallTablet => _width >= 600 && _width < 900;
-
-  /// Covers iPads and larger tablets
-  bool get isTablet => _width >= 900 && _width < 1200;
-
-  /// Standard desktop and wide web
-  bool get isDesktop => _width >= 1200;
-
-  /// Optional: current device type
-  String get currentType {
-    if (isMobile) return "Mobile";
-    if (isFoldableOrSmallTablet) return "Foldable/Small Tablet";
-    if (isTablet) return "Tablet";
-    return "Desktop";
+  double scale(double value) {
+    if (isUltraHD) return value * 1.5;
+    if (isDesktop) return value * 1.2;
+    if (isLaptop) return value * 1.1;
+    if (isTablet) return value * 0.95;
+    return value * 0.85;
   }
+
+  double get screenWidth => width;
 }

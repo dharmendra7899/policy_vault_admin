@@ -35,106 +35,6 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
       'status': 'ACTIVE',
     },
     {
-      'id': '2',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9795541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY73837',
-      'expDate': '28/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '2',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9795541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY73837',
-      'expDate': '28/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
-      'id': '3',
-      'name': 'Dharmendra Kumar',
-      'mobile': '9721541088',
-      'type': 'Life Insurance Corporation',
-      'policyNo': 'POLICY36546',
-      'expDate': '18/06/2025',
-      'status': 'ACTIVE',
-    },
-    {
       'id': '3',
       'name': 'Suraj Tiwari',
       'mobile': '9918541088',
@@ -216,6 +116,7 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+      bool isNarrow = constraints.maxWidth < 600;
         return Container(
           margin: EdgeInsets.all(12),
           padding: EdgeInsets.all(20),
@@ -234,38 +135,36 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Near By Exp. Policy',
-                    style: context.textTheme.titleMedium,
-                  ),
-                  Row(
+                  isNarrow
+                      ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: 250,
-                        child: AppTextField(
-                          radius: 5,
-                          borderWidth: 1,
-                          hintText: 'Search...',
-                          prefixIcon: const Icon(Icons.search),
-                          onChanged: (value) =>
-                              setState(() => searchQuery = value),
-                        ),
+                      Text(
+                        'Near By Exp. Policy',
+                        style: context.textTheme.titleMedium,
                       ),
-                      const SizedBox(width: 12),
-                      AppButton(
-                        fontSize: 12,
-                        onPressed: downloadCSV,
-                        title: "Download CSV",
-                        radius: 5,
-                        width: 160,
+                      const SizedBox(height: 12),
+                      _searchAndDownloadUI(isVertical: true),
+                    ],
+                  )
+                      : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Near By Exp. Policy',
+                        style: context.textTheme.titleMedium,
                       ),
+                      _searchAndDownloadUI(isVertical: false),
                     ],
                   ),
                 ],
               ),
+
               const SizedBox(height: 16),
               const Divider(thickness: 1),
               const SizedBox(height: 16),
@@ -479,6 +378,51 @@ class _ExpiredPoliciesState extends State<ExpiredPolicies> {
       },
     );
   }
+
+
+  Widget _searchAndDownloadUI({bool isVertical = false}) {
+    return isVertical
+        ? Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _searchField(),
+        const SizedBox(height: 12),
+        _downloadButton(),
+      ],
+    )
+        : Row(
+      children: [
+        _searchField(),
+        const SizedBox(width: 12),
+        _downloadButton(),
+      ],
+    );
+  }
+
+  Widget _searchField() {
+    return SizedBox(
+      width: 250,
+      child: AppTextField(
+        radius: 5,
+        borderWidth: 1,
+        hintText: 'Search...',
+        prefixIcon: const Icon(Icons.search),
+        onChanged: (value) => setState(() => searchQuery = value),
+      ),
+    );
+  }
+
+  Widget _downloadButton() {
+    return AppButton(
+      fontSize: 12,
+      onPressed: downloadCSV,
+      title: "Download CSV",
+      radius: 5,
+      width: 160,
+    );
+  }
+
+
 
   Widget _wrapText(String text, BuildContext context) {
     return SelectableText(

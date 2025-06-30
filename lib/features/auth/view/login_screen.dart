@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    var layout = Layout(context);
+    var layout = LayoutHelper(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (layout.isDesktop || layout.isTablet) {

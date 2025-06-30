@@ -202,40 +202,42 @@ class _AllUsersState extends State<AllUsers> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total Customers - 12',
-                    style: context.textTheme.titleMedium,
-                  ),
-                  Row(
-
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isNarrow = constraints.maxWidth < 600;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(width: 250,
-                        child: AppTextField(
-                          radius: 5,
-                          borderWidth: 1,
-                          hintText: 'Search...',
-                          prefixIcon: const Icon(Icons.search),
-                          onChanged: (value) => setState(() => searchQuery = value),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      AppButton(
-                        onPressed: downloadCSV,
-                        title: "Download CSV",
-                        radius: 5,
-                        fontSize: 12,
-                        width: 160,
-                      ),
+                      isNarrow
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Customers - 12',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 12),
+                                _searchAndDownloadUI(isVertical: true),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total Customers - 12',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                _searchAndDownloadUI(isVertical: false),
+                              ],
+                            ),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
+
               const SizedBox(height: 16),
               const Divider(thickness: 1),
               const SizedBox(height: 16),
-
 
               LayoutBuilder(
                 builder: (context, constraints) {
@@ -415,7 +417,9 @@ class _AllUsersState extends State<AllUsers> {
                                     ),
                                   ),
                                   DataCell(
-                                    GestureDetector(onTap: () => context.goNamed("User Details"),
+                                    GestureDetector(
+                                      onTap: () =>
+                                          context.goNamed("User Details"),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 12,
@@ -423,7 +427,9 @@ class _AllUsersState extends State<AllUsers> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: appColors.primary,
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
                                         ),
                                         child: Text(
                                           policy['action']!,
@@ -468,6 +474,48 @@ class _AllUsersState extends State<AllUsers> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _searchAndDownloadUI({bool isVertical = false}) {
+    return isVertical
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _searchField(),
+              const SizedBox(height: 12),
+              _downloadButton(),
+            ],
+          )
+        : Row(
+            children: [
+              _searchField(),
+              const SizedBox(width: 12),
+              _downloadButton(),
+            ],
+          );
+  }
+
+  Widget _searchField() {
+    return SizedBox(
+      width: 250,
+      child: AppTextField(
+        radius: 5,
+        borderWidth: 1,
+        hintText: 'Search...',
+        prefixIcon: const Icon(Icons.search),
+        onChanged: (value) => setState(() => searchQuery = value),
+      ),
+    );
+  }
+
+  Widget _downloadButton() {
+    return AppButton(
+      fontSize: 12,
+      onPressed: downloadCSV,
+      title: "Download CSV",
+      radius: 5,
+      width: 160,
     );
   }
 
