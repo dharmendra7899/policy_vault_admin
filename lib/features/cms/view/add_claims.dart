@@ -59,7 +59,10 @@ class _AddClaimsState extends State<AddClaims> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(texts.selectCompany, style: context.textTheme.bodyMedium),
+                  Text(
+                    texts.selectCompany,
+                    style: context.textTheme.bodyMedium,
+                  ),
                   const SizedBox(height: 6),
                   Container(
                     height: 45,
@@ -74,17 +77,15 @@ class _AddClaimsState extends State<AddClaims> {
                     child: DropdownButton(
                       menuWidth: MediaQuery.of(context).size.width * 0.28,
                       isExpanded: true,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 15,
+                        color: appColors.titleColor,
+                      ),
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(8),
                       isDense: true,
                       underline: SizedBox(),
-                      hint: Text(
-                        "comapny",
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          fontSize: 15,
-                          color: appColors.titleColor,
-                        ),
-                      ),
+                      hint: Text("company"),
                       borderRadius: BorderRadius.circular(8),
                       value: selectedCompany,
 
@@ -93,13 +94,7 @@ class _AddClaimsState extends State<AddClaims> {
                         return DropdownMenuItem(
                           value: items,
 
-                          child: Text(
-                            items,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontSize: 15,
-                              color: appColors.titleColor,
-                            ),
-                          ),
+                          child: Text(items),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -125,17 +120,15 @@ class _AddClaimsState extends State<AddClaims> {
                     child: DropdownButton(
                       menuWidth: MediaQuery.of(context).size.width * 0.28,
                       isExpanded: true,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 15,
+                        color: appColors.titleColor,
+                      ),
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(8),
                       isDense: true,
                       underline: SizedBox(),
-                      hint: Text(
-                        "policy",
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          fontSize: 15,
-                          color: appColors.titleColor,
-                        ),
-                      ),
+                      hint: Text("policy"),
                       borderRadius: BorderRadius.circular(8),
                       value: selectedPolicyType,
 
@@ -144,13 +137,7 @@ class _AddClaimsState extends State<AddClaims> {
                         return DropdownMenuItem(
                           value: items,
 
-                          child: Text(
-                            items,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontSize: 15,
-                              color: appColors.titleColor,
-                            ),
-                          ),
+                          child: Text(items),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -192,17 +179,15 @@ class _AddClaimsState extends State<AddClaims> {
                       child: DropdownButton(
                         menuWidth: MediaQuery.of(context).size.width * 0.28,
                         isExpanded: true,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 15,
+                          color: appColors.titleColor,
+                        ),
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.all(8),
                         isDense: true,
                         underline: SizedBox(),
-                        hint: Text(
-                          "Status",
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontSize: 15,
-                            color: appColors.titleColor,
-                          ),
-                        ),
+                        hint: Text("Status"),
                         borderRadius: BorderRadius.circular(8),
                         value: selectedStatus,
 
@@ -211,13 +196,7 @@ class _AddClaimsState extends State<AddClaims> {
                           return DropdownMenuItem(
                             value: items,
 
-                            child: Text(
-                              items,
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontSize: 15,
-                                color: appColors.titleColor,
-                              ),
-                            ),
+                            child: Text(items),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {

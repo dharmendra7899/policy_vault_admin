@@ -30,8 +30,8 @@ class _HoverCardState extends State<HoverCard> {
           boxShadow: [
             BoxShadow(
               color: isHovering
-                  ? Colors.indigo.withOpacity(0.2)
-                  : Colors.grey.withOpacity(0.08),
+                  ? Colors.indigo.withValues(alpha: 0.2)
+                  : Colors.grey.withValues(alpha: 0.08),
               blurRadius: isHovering ? 8 : 3,
               offset: const Offset(0, 4),
             ),
@@ -45,7 +45,7 @@ class _HoverCardState extends State<HoverCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(5),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xFFF1F3F6),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:policy_vault_admin/res/constants/assets/const_images.dart';
 import 'package:policy_vault_admin/res/constants/texts.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
@@ -87,7 +88,8 @@ class _AdminAvatarMenuState extends State<AdminAvatarMenu> {
               width: MediaQuery.of(context).size.width * 0.06,
               onPressed: () {
                 Navigator.of(context).pop();
-                // _logout();
+
+                context.go('/login');
               },
               title: texts.yes,
             ),
@@ -140,3 +142,4 @@ class _AdminAvatarMenuState extends State<AdminAvatarMenu> {
     );
   }
 }
+

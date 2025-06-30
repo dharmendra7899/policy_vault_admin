@@ -147,7 +147,6 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Table(
-
                       border: TableBorder.symmetric(
                         inside: BorderSide(color: Colors.grey.shade400),
                         outside: BorderSide(color: Colors.grey.shade400),
@@ -198,7 +197,6 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
                     ),
                   ),
                 ),
-
               ),
               const SizedBox(height: 26),
 
@@ -267,7 +265,10 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
         isExpanded: true,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8),
-
+        style: context.textTheme.bodyMedium?.copyWith(
+          fontSize: 15,
+          color: appColors.titleColor,
+        ),
         isDense: true,
         underline: SizedBox(),
         hint: Text("Filter BY"),
@@ -275,10 +276,7 @@ class _SupportManagementScreenState extends State<SupportManagementScreen> {
         value: dropdownValue,
         icon: const Icon(Icons.keyboard_arrow_down),
         items: items.map((String items) {
-          return DropdownMenuItem(
-            value: items,
-            child: Text(items, style: context.textTheme.bodySmall),
-          );
+          return DropdownMenuItem(value: items, child: Text(items));
         }).toList(),
         onChanged: (String? newValue) {
           setState(() {

@@ -116,20 +116,27 @@ class _AllUsersState extends State<AllUsers> {
   String searchQuery = '';
 
   List<Map<String, String>> get filteredPolicies {
+
     final query = searchQuery.toLowerCase();
-    return userList.where((p) {
+    return userList.where((p)   {
       return p.values.any((v) => v.toLowerCase().contains(query));
     }).toList();
   }
 
   List<Map<String, String>> get paginatedPolicies {
     final start = (currentPage - 1) * itemsPerPage;
+    if (start >= filteredPolicies.length) {
+      return [];
+    }
     final end = start + itemsPerPage;
     return filteredPolicies.sublist(
       start,
       end > filteredPolicies.length ? filteredPolicies.length : end,
     );
   }
+
+
+
 
   int get totalPages => (filteredPolicies.length / itemsPerPage)
       .ceil()
@@ -504,7 +511,10 @@ class _AllUsersState extends State<AllUsers> {
         borderWidth: 1,
         hintText: 'Search...',
         prefixIcon: const Icon(Icons.search),
-        onChanged: (value) => setState(() => searchQuery = value),
+        onChanged: (value) => setState(() {
+          searchQuery = value;
+          currentPage = 1;
+        }),
       ),
     );
   }

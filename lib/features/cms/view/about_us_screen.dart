@@ -73,6 +73,11 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       child: DropdownButton(
                         menuWidth: MediaQuery.of(context).size.width * 0.28,
                         isExpanded: true,
+
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 15,
+                          color: appColors.titleColor,
+                        ),
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.all(8),
                         isDense: true,
@@ -80,16 +85,11 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         hint: Text("Status"),
                         borderRadius: BorderRadius.circular(8),
                         value: selectedStatus,
-
                         icon: const Icon(Icons.keyboard_arrow_down),
                         items: statusList.map((String items) {
                           return DropdownMenuItem(
                             value: items,
-
-                            child: Text(
-                              items,
-                              style: context.textTheme.bodySmall,
-                            ),
+                            child: Text(items),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {

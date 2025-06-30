@@ -123,7 +123,7 @@ class _ClaimInformationScreenState extends State<ClaimInformationScreen> {
                           columnWidths: {
                             0: FixedColumnWidth(100),
                             1: FixedColumnWidth(300),
-                            2: FixedColumnWidth(300),
+                            2: FixedColumnWidth(290),
                             3: FixedColumnWidth(600),
                             4: FixedColumnWidth(200),
                           },
