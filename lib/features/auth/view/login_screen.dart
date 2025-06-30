@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:policy_vault_admin/res/constants/assets/const_images.dart';
+import 'package:policy_vault_admin/res/constants/messages.dart';
 import 'package:policy_vault_admin/res/constants/texts.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
 import 'package:policy_vault_admin/res/widgets/app_text_field.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
 import 'package:policy_vault_admin/responsive/layout.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
+import 'package:policy_vault_admin/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,8 +19,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
   bool isPasswordVisible = false;
 
   @override
@@ -69,56 +74,74 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: h * 0.0015),
-
-                              Text(
-                                texts.welcome,
-                                style: context.textTheme.titleLarge,
-                              ),
-
-                              SizedBox(height: h * 0.025),
-                              AppTextField(
-                                controller: email,
-                                hintText: texts.emailAddressHint,
-                                labelText: texts.emailAddress,
-
-                              ),
-                              const SizedBox(height: 20),
-                              AppTextField(
-                                obscureText: !isPasswordVisible,
-                                controller: password,
-                                hintText: texts.passwordHint,
-                                labelText: texts.password,
-
-                                iconData: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isPasswordVisible = !isPasswordVisible;
-                                    });
-                                  },
-                                  icon: isPasswordVisible
-                                      ? Icon(
-                                          Icons.visibility,
-                                          color: appColors.editTextColor,
-                                        )
-                                      : Icon(
-                                          Icons.visibility_off,
-                                          color: appColors.editTextColor,
-                                        ),
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(height: h * 0.0015),
+                                Text(
+                                  texts.welcome,
+                                  style: context.textTheme.titleLarge,
                                 ),
-                              ),
-                              const SizedBox(height: 40),
-                              AppButton(
-                                radius: 12,
-                                onPressed: () {
-                                  context.goNamed('Dashboard');
-                                },
-                                title: texts.login,
-                              ),
-                            ],
+
+                                SizedBox(height: h * 0.025),
+                                AppTextField(
+                                  controller: email,
+                                  hintText: texts.emailAddressHint,
+                                  labelText: texts.emailAddress,
+                                  keyBoardType: TextInputType.emailAddress,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(60),
+                                  ],
+                                  validator: (val) =>
+                                      Utils.validateEmail(val ?? ''),
+                                ),
+                                const SizedBox(height: 20),
+                                AppTextField(
+                                  obscureText: !isPasswordVisible,
+                                  controller: password,
+                                  hintText: texts.passwordHint,
+                                  labelText: texts.password,
+                                  keyBoardType: TextInputType.visiblePassword,
+                                  iconData: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isPasswordVisible = !isPasswordVisible;
+                                      });
+                                    },
+                                    icon: isPasswordVisible
+                                        ? Icon(
+                                            Icons.visibility,
+                                            color: appColors.editTextColor,
+                                          )
+                                        : Icon(
+                                            Icons.visibility_off,
+                                            color: appColors.editTextColor,
+                                          ),
+                                  ),
+
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return Messages.PASSWORD_REQ;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 40),
+                                AppButton(
+                                  radius: 12,
+                                  onPressed: () {
+                                    if (formKey.currentState == null ||
+                                        formKey.currentState!.validate()) {
+
+                                      context.goNamed('Dashboard');
+                                    }
+                                  },
+                                  title: texts.login,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -174,7 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: email,
                           hintText: texts.emailAddressHint,
                           labelText: texts.emailAddress,
-
                         ),
                         const SizedBox(height: 20),
                         AppTextField(
@@ -203,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 40),
                         AppButton(
                           radius: 12,
-                          onPressed: ()  {
+                          onPressed: () {
                             context.goNamed('Dashboard');
                           },
                           title: texts.login,
@@ -219,6 +241,4 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
-
-
 }

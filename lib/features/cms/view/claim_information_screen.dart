@@ -100,63 +100,57 @@ class _ClaimInformationScreenState extends State<ClaimInformationScreen> {
               const Divider(thickness: 1),
               const SizedBox(height: 16),
 
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final screenWidth = constraints.maxWidth;
+              Scrollbar(
+                thumbVisibility: true,
+                controller: _scrollController,
+                interactive: true,
+                radius: Radius.circular(6),
 
-                  return Scrollbar(
-                    thumbVisibility: true,
-                    controller: _scrollController,
-                    interactive: true,
-                    radius: Radius.circular(6),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Table(
+                      border: TableBorder.symmetric(
+                        inside: BorderSide(color: Colors.grey.shade400),
+                        outside: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      columnWidths: {
+                        0: FixedColumnWidth(100),
+                        1: FixedColumnWidth(300),
+                        2: FixedColumnWidth(290),
+                        3: FixedColumnWidth(600),
+                        4: FixedColumnWidth(200),
+                      },
 
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Table(
-                          border: TableBorder.symmetric(
-                            inside: BorderSide(color: Colors.grey.shade400),
-                            outside: BorderSide(color: Colors.grey.shade400),
+                      children: [
+                        TableRow(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
                           ),
-                          columnWidths: {
-                            0: FixedColumnWidth(100),
-                            1: FixedColumnWidth(300),
-                            2: FixedColumnWidth(290),
-                            3: FixedColumnWidth(600),
-                            4: FixedColumnWidth(200),
-                          },
-
                           children: [
-                            TableRow(
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                              ),
-                              children: [
-                                _headerCell('S.No'),
-                                _headerCell('Insurance Company'),
-                                _headerCell('Policy Type'),
-                                _headerCell('Claim Information'),
-                                _headerCell('Action'),
-                              ],
-                            ),
-                            for (final policy in paginatedPolicies)
-                              TableRow(
-                                children: [
-                                  _cell(policy['s_no']!),
-                                  _cell(policy['question']!),
-                                  _cell(policy['answer']!),
-                                  _cell(policy['claim']!),
-                                  _actionCell(policy['action']!),
-                                ],
-                              ),
+                            _headerCell('S.No'),
+                            _headerCell('Insurance Company'),
+                            _headerCell('Policy Type'),
+                            _headerCell('Claim Information'),
+                            _headerCell('Action'),
                           ],
                         ),
-                      ),
+                        for (final policy in paginatedPolicies)
+                          TableRow(
+                            children: [
+                              _cell(policy['s_no']!),
+                              _cell(policy['question']!),
+                              _cell(policy['answer']!),
+                              _cell(policy['claim']!),
+                              _actionCell(policy['action']!),
+                            ],
+                          ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
               const SizedBox(height: 26),
 

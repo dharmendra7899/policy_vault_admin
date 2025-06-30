@@ -8,6 +8,8 @@ import 'package:policy_vault_admin/res/constants/messages.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
 
+enum ToastType { success, error }
+
 class Utils {
   static String getInitials(String? name) {
     if (name == null || name.trim().isEmpty) return "";
@@ -35,29 +37,38 @@ class Utils {
     }
   }
 
-  static void toastMessage(
-    BuildContext context, {
+  static void showToast({
+    required BuildContext context,
     required String message,
-    Duration duration = const Duration(milliseconds: 3000),
+    ToastType type = ToastType.success,
+    Duration duration = const Duration(seconds: 2),
   }) {
+
     final overlay = Overlay.of(context);
     final overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
+      builder:
+          (context) => Positioned(
         bottom: MediaQuery.of(context).padding.bottom + 60,
         left: 16,
         right: 16,
         child: Material(
           color: Colors.transparent,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
             decoration: BoxDecoration(
-              color: appColors.lightColor,
+              color: type == ToastType.success
+                  ? appColors.appGreen.withValues(alpha: 0.8)
+                  : appColors.error.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(12),
+
             ),
             child: Text(
               message,
               style: context.textTheme.bodyMedium?.copyWith(
-                color: appColors.titleColor,
+                color: appColors.appWhite,
               ),
               textAlign: TextAlign.center,
             ),
@@ -70,40 +81,12 @@ class Utils {
     Future.delayed(duration, () {
       overlayEntry.remove();
     });
+
+
+
   }
 
-  static void flushBarErrorMessage(String? message, BuildContext context) {
-    final overlay = Overlay.of(context);
-    final overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        bottom: MediaQuery.of(context).padding.bottom + 60,
-        left: 16,
-        right: 16,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: appColors.error,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              message.toString(),
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: appColors.appWhite,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),
-    );
 
-    overlay.insert(overlayEntry);
-    Future.delayed(Duration(seconds: 3), () {
-      overlayEntry.remove();
-    });
-  }
 
   // average for ratings
   static double averageRatings(List<int> ratings) {
@@ -183,7 +166,7 @@ class Utils {
         int fileSizeInBytes = file.lengthSync();
         double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
         if (fileSizeInMB > 5 && context.mounted) {
-          flushBarErrorMessage("File size must be less than 5MB", context);
+          showToast(context: context,message: "File size must be less than 5MB", type: ToastType.error);
         } else {
           Future.delayed(
             const Duration(seconds: 5),
@@ -213,7 +196,8 @@ class Utils {
       return imageFile;
     } else {
       if (context.mounted) {
-        flushBarErrorMessage("Nothing is selected", context);
+        showToast(context: context,message: "Nothing is selected", type: ToastType.error);
+
       }
     }
 
@@ -223,60 +207,6 @@ class Utils {
     return null;
   }
 
-  Future<File?> pickImageOld({
-    required BuildContext context,
-    required ImageSource img,
-    bool allowMultiple = false,
-    List<String> allowedExtensions = const ['pdf', 'jpg', 'png'],
-  }) async {
-    setShouldLogout(false);
-    if (img == ImageSource.gallery) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowMultiple: allowMultiple,
-        allowedExtensions: allowedExtensions,
-      );
-      if (result != null) {
-        File file = File(result.files.single.path!);
-        int fileSizeInBytes = file.lengthSync();
-        double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
-        if (fileSizeInMB > 5 && context.mounted) {
-          flushBarErrorMessage("File size must be less than 5MB", context);
-        } else {
-          Future.delayed(
-            const Duration(seconds: 5),
-          ).then((value) => setShouldLogout(true));
-          return File(result.files.single.path!);
-        }
-      } else {
-        Future.delayed(
-          const Duration(seconds: 5),
-        ).then((value) => setShouldLogout(true));
-        return null;
-      }
-    }
-
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: img,
-      imageQuality: 50,
-      requestFullMetadata: true,
-    );
-    if (pickedFile != null) {
-      Future.delayed(
-        const Duration(seconds: 3),
-      ).then((value) => setShouldLogout(true));
-      return File(pickedFile.path);
-    } else {
-      if (context.mounted) {
-        flushBarErrorMessage("Nothing is selected", context);
-      }
-    }
-    Future.delayed(
-      const Duration(seconds: 3),
-    ).then((value) => setShouldLogout(true));
-    return null;
-  }
 
   static String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {

@@ -98,7 +98,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
 
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final screenWidth = constraints.maxWidth;
+
 
                   return Scrollbar(
                     thumbVisibility: true,
