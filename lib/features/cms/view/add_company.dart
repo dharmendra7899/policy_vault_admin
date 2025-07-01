@@ -1,9 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:policy_vault_admin/res/constants/texts.dart';
 import 'package:policy_vault_admin/res/widgets/app_button.dart';
 import 'package:policy_vault_admin/res/widgets/app_text_field.dart';
 import 'package:policy_vault_admin/res/widgets/context_extension.dart';
+import 'package:policy_vault_admin/responsive/layout.dart';
+import 'package:policy_vault_admin/responsive/responsive_wrapper.dart';
 import 'package:policy_vault_admin/theme/colors.dart';
 
 class AddCompany extends StatefulWidget {
@@ -15,7 +18,13 @@ class AddCompany extends StatefulWidget {
 
 class _AddCompanyState extends State<AddCompany> {
   final TextEditingController _companyController = TextEditingController();
+  final TextEditingController _primaryColorHexController =
+      TextEditingController();
+  final TextEditingController _secondaryColorHexController =
+      TextEditingController();
   String? _selectedFileName;
+  Color _primaryColor = Colors.blue;
+  Color _secondaryColor = Colors.red;
 
   Future<void> _pickFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -33,8 +42,33 @@ class _AddCompanyState extends State<AddCompany> {
   var statusList = ['Active', 'InActive'];
   String? selectedStatus;
 
+  void _showColorPicker(Color initialColor, Function(Color) onColorChanged) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Pick a Color"),
+        content: SingleChildScrollView(
+          child: ColorPicker(
+            pickerColor: initialColor,
+            onColorChanged: onColorChanged,
+            enableAlpha: false,
+            showLabel: true,
+            pickerAreaHeightPercent: 0.8,
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text("Select"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var layout = LayoutHelper(context);
     return Scaffold(
       backgroundColor: appColors.screenBg,
       body: SingleChildScrollView(
@@ -71,26 +105,162 @@ class _AddCompanyState extends State<AddCompany> {
                     hintText: 'Enter Information',
                   ),
 
-                  const SizedBox(height: 16),
-                  Row(
+                  const SizedBox(height: 26),
+                  ResponsiveWrapper(
+                    rowCrossAxisAlignment: CrossAxisAlignment.center,
+                    rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    columnCrossAxisAlignment: CrossAxisAlignment.start,
+                    isColumn: layout.isTablet || layout.isMobile,
                     children: [
-                      AppButton(
-                        height: 33,
-                        width: 100,
-                        radius: 4,
-                        fontSize: 12,
-                        borderWidth: 1,
-                        onPressed: _pickFile,
-                        title: texts.chooseFile,
-                        color: appColors.chooseColor,
-                        isBorder: true,
-                        borderColor: appColors.appBlack,
-                        textColor: appColors.appBlack,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 350,
+                          child: Row(
+                            children: [
+                              AppButton(
+                                height: 33,
+                                width: 100,
+                                radius: 4,
+                                fontSize: 12,
+                                borderWidth: 1,
+                                onPressed: _pickFile,
+                                title: texts.chooseFile,
+                                color: appColors.chooseColor,
+                                isBorder: true,
+                                borderColor: appColors.appBlack,
+                                textColor: appColors.appBlack,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  _selectedFileName ?? "No file chosen",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
 
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(_selectedFileName ?? "No file chosen"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Primary Color",
+                              style: context.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 6),
+                            SizedBox(
+                              width: 250,
+                              height: 40,
+                              child: AppTextField(
+                                controller: _primaryColorHexController
+                                  ..text = _primaryColor.value
+                                      .toRadixString(16)
+                                      .padLeft(8, '0')
+                                      .substring(2),
+                                radius: 6,
+                                borderWidth: 1.5,
+                                hintText: '#hex',
+                                onChanged: (value) {
+                                  final color = Color(
+                                    int.parse("0xff${value.replaceAll('#', '')}"),
+                                  );
+                                  setState(() => _primaryColor = color);
+                                },
+                                iconData: IconButton(
+                                  onPressed: () {
+                                    _showColorPicker(_primaryColor, (color) {
+                                      setState(() {
+                                        _primaryColor = color;
+                                        _primaryColorHexController.text = color
+                                            .value
+                                            .toRadixString(16)
+                                            .padLeft(8, '0')
+                                            .substring(2);
+                                      });
+                                    });
+                                  },
+                                  icon: Container(
+                                    width: 45,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: _primaryColor,
+                                      border: Border.all(
+                                        color: appColors.borderColor,
+                                        width: 0.4,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Secondary Color",
+                              style: context.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 6),
+
+                            SizedBox(
+                              width: 250,
+                              height: 40,
+                              child: AppTextField(
+                                controller: _secondaryColorHexController
+                                  ..text = _secondaryColor.value
+                                      .toRadixString(16)
+                                      .padLeft(8, '0')
+                                      .substring(2),
+                                radius: 6,
+                                borderWidth: 1.5,
+                                hintText: '#hex',
+                                onChanged: (value) {
+                                  final color = Color(
+                                    int.parse("0xff${value.replaceAll('#', '')}"),
+                                  );
+                                  setState(() => _secondaryColor = color);
+                                },
+                                iconData: IconButton(
+                                  onPressed: () {
+                                    _showColorPicker(_secondaryColor, (color) {
+                                      setState(() {
+                                        _secondaryColor = color;
+                                        _secondaryColorHexController.text = color
+                                            .value
+                                            .toRadixString(16)
+                                            .padLeft(8, '0')
+                                            .substring(2);
+                                      });
+                                    });
+                                  },
+                                  icon: Container(
+                                    width: 45,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: _secondaryColor,
+                                      border: Border.all(
+                                        color: appColors.borderColor,
+                                        width: 0.4,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

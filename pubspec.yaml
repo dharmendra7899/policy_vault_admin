@@ -47,6 +47,7 @@ dependencies:
   file_picker: any
   cached_network_image: any
   csv: ^5.0.2
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
